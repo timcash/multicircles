@@ -7,20 +7,26 @@ let canvas = document.getElementById('draw');
 let ctx = canvas.getContext('2d');
 ctx.fillStyle = "rgb(200,0,0)";
 
+let nodes = 10;
+let mult  = 2;
 
-let c = genCircle(15, 50);
+let c = genCircle(nodes, 150);
 log(c.length);
-let c1 = L.take(c.length - 1, c);
-let c2 = L.takeRight(c.length - 1, c);
-let z  = L.zip(c1, c2);
-log(z);
+let c1  = L.take(c.length - 1, c);
+let c2  = L.takeRight(c.length - 1, c);
+let z   = L.zip(c1, c2);
+let p1  = L.map((x)=> [x, x * mult % nodes], L.range(0,nodes));
+let p2  = L.map((x)=> [c[x[0]], c[x[1]]], p1);
+log(p2);
 
 
 ctx.beginPath();
-L.map((p)=> line(ctx, p[0], p[1]), z);
+L.map((p)=> line(ctx, p[0], p[1]), p2);
 ctx.stroke();
 
-
+ctx.beginPath();
+ctx.arc(150, 150, 150, 0, pi2);
+ctx.stroke();
 
 function log(t) {
     console.log(JSON.stringify(t, true, 4));
